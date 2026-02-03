@@ -18,9 +18,7 @@ Copyright gfycat.com
 
 Для картинки персонажа использовать следующую:
 
-<div>
- <img src="https://github.com/danroman-github/ahj-dom/tree/main/src/img/goblin.png" height="64">
- </div>
+![](https://github.com/danroman-github/ahj-dom/blob/main/src/img/goblin.png)
 
  Важно: не использовать removeChild!
 
