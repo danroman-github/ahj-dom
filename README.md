@@ -4,7 +4,7 @@
 
 Вы решили развлечься и реализовать некое подобие игры, где гномы (или другие существа), выскакивают из "отверстий" и по ним нужно бить молотком:
 
-!(https://github.com/danroman-github/ahj-dom/tree/main/src/img/GracefulMiniatureBustard-small.gif)
+![](https://github.com/danroman-github/ahj-dom/tree/main/src/img/GracefulMiniatureBustard-small.gif)
 
  Copyright gfycat.com
 
