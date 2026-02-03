@@ -6,7 +6,7 @@
 
 ![](https://github.com/danroman-github/ahj-dom/tree/main/src/img/GracefulMiniatureBustard-small.gif)
 
- Copyright gfycat.com
+Copyright gfycat.com
 
 ### Описание
 
