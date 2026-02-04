@@ -13,7 +13,7 @@ function createBoard(size) {
             cell.className = 'cell';
             cell.dataset.row = r;
             cell.dataset.col = c;
-            container.appendChild(cell);
+            container.append(cell);
             board.push(cell);
         }
     }
@@ -23,8 +23,7 @@ function createBoard(size) {
     legend.textContent = 'Перемещение гоблина по сетке 4x4 каждые 1.5 секунды';
 
     const root = document.querySelector('.game-field');
-    root.appendChild(legend);
-    root.appendChild(container);
+    root.append(legend, container);
 
     return { container, board };
 }
@@ -36,16 +35,22 @@ function getIndexFromRC(r, c, size) {
 function pickRandomIndex(excludeIndex, size = GRID_SIZE) {
     let idx;
     const maxAttempts = 20;
-    for (let i = 0; i < maxAttempts; i += 1) {
+
+    let attempts = 0;
+    do {
         const r = Math.floor(Math.random() * size);
         const c = Math.floor(Math.random() * size);
         idx = getIndexFromRC(r, c, size);
-        if (idx !== excludeIndex) return idx;
+        attempts += 1;
+    } while (idx === excludeIndex && attempts < maxAttempts);
+
+    if (idx === excludeIndex) {
+        for (let i = 0; i < size * size; i += 1) {
+            if (i !== excludeIndex) return i;
+        }
     }
-    for (let i = 0; i < size * size; i += 1) {
-        if (i !== excludeIndex) return i;
-    }
-    return excludeIndex;
+
+    return idx;
 }
 
 function placeGoblinAt(board, index) {
@@ -54,7 +59,7 @@ function placeGoblinAt(board, index) {
     img.src = goblin;
     img.alt = 'Goblin';
     img.className = 'goblin';
-    cell.appendChild(img);
+    cell.append(img);
     return img;
 }
 
@@ -64,14 +69,44 @@ export default function App() {
     const goblinImg = placeGoblinAt(board, currentIndex);
 
     const INTERVAL_MS = 1500;
+    let gameInterval;
 
-    setInterval(() => {
-        const nextIndex = pickRandomIndex(currentIndex, GRID_SIZE);
+    // Кнопка Стоп
+    const stopButton = document.createElement('button');
+    stopButton.textContent = 'Стоп';
+    stopButton.addEventListener('click', () => {
+        stopGame();
+    });
 
-        // Перемещаем гоблина путём изменения родителя
-        const targetCell = board[nextIndex];
-        targetCell.appendChild(goblinImg);
+    const root = document.querySelector('.game-field');
+    root.insertBefore(stopButton, root.firstChild);
 
-        currentIndex = nextIndex;
-    }, INTERVAL_MS);
-}
+    function startGame() {
+        if (gameInterval) {
+            clearInterval(gameInterval);
+        }
+
+        gameInterval = setInterval(() => {
+            const nextIndex = pickRandomIndex(currentIndex, GRID_SIZE);
+
+            // Перемещаем гоблина путём изменения родителя
+            const targetCell = board[nextIndex];
+            targetCell.append(goblinImg);
+
+            currentIndex = nextIndex;
+        }, INTERVAL_MS);
+    }
+
+    function stopGame() {
+        if (gameInterval) {
+            clearInterval(gameInterval);
+            gameInterval = null;
+        }
+    }
+
+    startGame();
+
+    return {
+        stopGame
+    };
+};
